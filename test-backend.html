@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backend Test</title>
+</head>
+<body>
+    <h2>Backend Connection Test</h2>
+    <div id="result"></div>
+    
+    <script>
+        const resultDiv = document.getElementById('result');
+        
+        // Test 1: Check if backend is reachable
+        async function testBackend() {
+            resultDiv.innerHTML = '<p>Testing backend connection...</p>';
+            
+            try {
+                // Test GET /patients
+                const response = await fetch('http://localhost:8080/api/patients');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML += `<p style="color:green">✅ Backend is running! Found ${data.length} patients.</p>`;
+                } else {
+                    resultDiv.innerHTML += `<p style="color:red">❌ Backend returned status: ${response.status}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML += `<p style="color:red">❌ Cannot connect to backend. Make sure it's running on port 8080.</p>`;
+                resultDiv.innerHTML += `<p>Error: ${error.message}</p>`;
+            }
+            
+            // Test 2: Try login
+            try {
+                const loginResponse = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'rahim@gmail.com', password: 'pass123' })
+                });
+                
+                if (loginResponse.ok) {
+                    const data = await loginResponse.json();
+                    resultDiv.innerHTML += `<p style="color:green">✅ Login API works!</p>`;
+                } else {
+                    resultDiv.innerHTML += `<p style="color:orange">⚠️ Login API returned: ${loginResponse.status}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML += `<p style="color:red">❌ Login API failed: ${error.message}</p>`;
+            }
+        }
+        
+        testBackend();
+    </script>
+</body>
+</html>
