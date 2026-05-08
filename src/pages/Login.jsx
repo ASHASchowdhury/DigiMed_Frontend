@@ -22,7 +22,6 @@ const Login = () => {
     }
     setLoading(false);
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
       <div className="relative">
@@ -37,7 +36,6 @@ const Login = () => {
             <h1 className="text-3xl font-bold mt-4 text-white">DigiMed</h1>
             <p className="text-indigo-100 mt-2">AI-Powered Hospital Management</p>
           </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-white mb-2">
