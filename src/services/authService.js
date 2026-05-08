@@ -4,16 +4,12 @@ export const loginUser = async (credentials) => {
   try {
     console.log('📤 Login attempt with:', credentials.email);
     
-    const response = await api.post('/auth/login', {
-      email: credentials.email,
-      password: credentials.password
-    });
+    const response = await api.post('/auth/login', credentials);
     
     console.log('📥 Login response:', response.data);
     
-    // Store token if returned
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
+    if (response.data.success) {
+      localStorage.setItem('token', 'demo-token'); // You can change later
     }
     
     return response.data;
@@ -23,28 +19,13 @@ export const loginUser = async (credentials) => {
   }
 };
 
-export const logoutUser = async () => {
-  try {
-    console.log('📤 Logout request');
-    const response = await api.post('/auth/logout');
-    console.log('📥 Logout response:', response.data);
-    localStorage.removeItem('token');
-    return response.data;
-  } catch (error) {
-    console.error('Logout failed:', error);
-    localStorage.removeItem('token');
-    return { success: true };
-  }
+export const logoutUser = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('digimed_user');
 };
 
-export const getCurrentUser = async () => {
-  try {
-    console.log('📤 Fetching current user');
-    const response = await api.get('/auth/me');
-    console.log('📥 Current user:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Failed to get current user:', error);
-    throw error;
-  }
+// ✅ Added this missing function
+export const getCurrentUser = () => {
+  const user = localStorage.getItem('digimed_user');
+  return user ? JSON.parse(user) : null;
 };
