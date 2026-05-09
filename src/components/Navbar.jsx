@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Menu, Sun, Moon, Bell, User, ChevronDown } from 'lucide-react';
+import { Menu, Sun, Moon, Bell, ChevronDown, LogOut } from 'lucide-react';
 
 const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
+  const handleLogout = () => {
+    logout();
+    setShowProfileMenu(false);
+  };
+
   return (
-    <header className="fixed top-0 right-0 left-0 bg-white dark:bg-gray-800 shadow-sm z-20 transition-all duration-300"
-      style={{ left: sidebarOpen ? '256px' : '80px' }}>
+    <header 
+      className="fixed top-0 right-0 bg-white dark:bg-gray-800 shadow-sm z-20 transition-all duration-300"
+      style={{ left: sidebarOpen ? '256px' : '80px' }}
+    >
       <div className="flex items-center justify-between px-6 py-3">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -20,7 +27,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
         </button>
 
         <div className="flex items-center gap-3 ml-auto">
-          {/* Theme Toggle */}
           <button
             onClick={toggleDarkMode}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -28,13 +34,11 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
             {darkMode ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} />}
           </button>
 
-          {/* Notifications */}
           <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 relative">
             <Bell size={20} />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
-          {/* User Menu */}
           <div className="relative">
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -63,9 +67,10 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     <p className="text-xs text-gray-500">{user?.email}</p>
                   </div>
                   <button
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-xl"
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-xl flex items-center gap-2"
                   >
-                    Sign Out
+                    <LogOut size={16} /> Sign Out
                   </button>
                 </div>
               </>

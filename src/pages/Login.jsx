@@ -112,7 +112,7 @@ const Login = () => {
 
         {/* Footer */}
         <div className="text-center mt-8 text-blue-200 text-sm">
-          <p>© 2024 DigiMed. All rights reserved.</p>
+          <p>© 2026 DigiMed. All rights reserved.</p>
         </div>
       </div>
     </div>
