@@ -4,7 +4,7 @@ import { registerDoctor } from '../services/doctorService';
 import { Save, ArrowLeft, Loader, Stethoscope } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const DoctorRegistration = () => {
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
