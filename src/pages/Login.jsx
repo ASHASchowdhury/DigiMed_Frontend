@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Activity, Mail, Lock, Sparkles, Heart, Shield } from 'lucide-react';
 
 const Login = () => {
- 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, user } = useAuth();
@@ -112,7 +112,7 @@ const Login = () => {
 
         {/* Footer */}
         <div className="text-center mt-8 text-blue-200 text-sm">
-          <p>© 2026 DigiMed. All rights reserved.</p>
+          <p>© 2024 DigiMed. All rights reserved.</p>
         </div>
       </div>
     </div>
