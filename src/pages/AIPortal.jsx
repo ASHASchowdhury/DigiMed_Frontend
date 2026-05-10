@@ -7,7 +7,7 @@ const AIPortal = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
- 
+  const analyzeSymptoms = async () => {
     if (!symptoms.trim()) {
       toast.error("Please describe your symptoms");
       return;
