@@ -13,7 +13,8 @@ const PatientRegistration = () => {
     dateOfBirth: '',
     gender: '',
     bloodGroup: '',
-    
+    phoneNumber: '',
+    alternatePhone: '',
     email: '',
     addressLine1: '',
     addressLine2: '',
