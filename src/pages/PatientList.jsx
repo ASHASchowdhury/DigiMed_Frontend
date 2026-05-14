@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllPatients, deletePatient } from '../services/patientService';
-import { Search, User, Eye, Trash2, Plus, Loader } from 'lucide-react';
+import { Search, User, Eye, Trash2, Plus, Loader, Phone, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const PatientList = () => {
@@ -27,11 +27,11 @@ const PatientList = () => {
   };
 
   const handleDelete = async (id, name) => {
-    if (window.confirm(`Delete patient ${name}?`)) {
+    if (window.confirm(`Delete patient ${name}? This action cannot be undone.`)) {
       try {
         await deletePatient(id);
         toast.success('Patient deleted successfully');
-        fetchPatients(); // Refresh list
+        fetchPatients();
       } catch (error) {
         console.error('Delete failed:', error);
         toast.error('Failed to delete patient');
@@ -48,7 +48,7 @@ const PatientList = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader className="animate-spin" size={40} />
+        <Loader className="animate-spin" size={40} color="#3b82f6" />
       </div>
     );
   }
@@ -61,7 +61,7 @@ const PatientList = () => {
           <p className="text-gray-600 dark:text-gray-400">Manage all registered patients</p>
         </div>
         <Link to="/patients/register">
-          <button className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition">
+          <button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition">
             <Plus size={20} />
             Add Patient
           </button>
@@ -75,7 +75,7 @@ const PatientList = () => {
           placeholder="Search patients by name, registration number, or phone..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white"
+          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
@@ -83,31 +83,41 @@ const PatientList = () => {
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center">
           <User size={48} className="mx-auto text-gray-400 mb-4" />
           <p className="text-gray-500">No patients found</p>
-          <Link to="/patients/register" className="text-indigo-600 mt-2 inline-block">
+          <Link to="/patients/register" className="text-blue-600 mt-2 inline-block">
             Register your first patient
           </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPatients.map((patient) => (
-            <div key={patient.id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
+            <div key={patient.id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                     <User size={24} />
                   </div>
                   <div>
                     <h3 className="font-semibold">{patient.fullName}</h3>
-                    <p className="text-sm text-indigo-100">{patient.registrationNumber}</p>
+                    <p className="text-sm text-blue-100">{patient.registrationNumber}</p>
                   </div>
                 </div>
               </div>
               <div className="p-4 space-y-2">
-                <p><span className="text-gray-500">Age/Gender:</span> {patient.age}/{patient.gender}</p>
-                <p><span className="text-gray-500">Phone:</span> {patient.phoneNumber}</p>
-                <p><span className="text-gray-500">City:</span> {patient.city}</p>
-                <p><span className="text-gray-500">Status:</span> 
-                  <span className={`ml-2 px-2 py-1 rounded-full text-xs ${
+                <p className="flex items-center gap-2 text-sm">
+                  <span className="text-gray-500">Age/Gender:</span> 
+                  <span>{patient.age} / {patient.gender}</span>
+                </p>
+                <p className="flex items-center gap-2 text-sm">
+                  <Phone size={14} className="text-gray-400" />
+                  <span>{patient.phoneNumber}</span>
+                </p>
+                <p className="flex items-center gap-2 text-sm">
+                  <MapPin size={14} className="text-gray-400" />
+                  <span>{patient.city}</span>
+                </p>
+                <p className="flex items-center gap-2 text-sm">
+                  <span className="text-gray-500">Status:</span> 
+                  <span className={`px-2 py-1 rounded-full text-xs ${
                     patient.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                   }`}>
                     {patient.status}
@@ -115,8 +125,8 @@ const PatientList = () => {
                 </p>
               </div>
               <div className="border-t p-4 flex justify-between">
-                <Link to={`/patients/${patient.id}`} className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700">
-                  <Eye size={18} /> View
+                <Link to={`/patients/${patient.id}`} className="flex items-center gap-2 text-blue-600 hover:text-blue-700">
+                  <Eye size={18} /> View Details
                 </Link>
                 <button onClick={() => handleDelete(patient.id, patient.fullName)} className="text-red-600 hover:text-red-700">
                   <Trash2 size={18} />
