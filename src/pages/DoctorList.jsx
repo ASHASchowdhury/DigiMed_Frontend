@@ -4,7 +4,43 @@ import { getAllDoctors, deleteDoctor } from '../services/doctorService';
 import { Stethoscope, Eye, Trash2, Plus, Search, Loader, Phone, Briefcase } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+const DoctorList = () => {
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  const fetchDoctors = async () => {
+    try {
+      const data = await getAllDoctors();
+      setDoctors(data);
+    } catch (error) {
+      toast.error('Failed to load doctors');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id, name) => {
+    if (window.confirm(`Delete Dr. ${name}? This action cannot be undone.`)) {
+      try {
+        await deleteDoctor(id);
+        toast.success('Doctor deleted successfully');
+        fetchDoctors();
+      } catch (error) {
+        toast.error('Failed to delete doctor');
+      }
+    }
+  };
+
+  const filteredDoctors = doctors.filter(doctor =>
+    doctor.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    doctor.specialization?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    doctor.licenseNumber?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return (
